@@ -1,0 +1,10 @@
+[project]
+name = "hello-world"
+version = "0.1.0"
+description = "A Hello World example for gRPC."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "grpcio==1.66.2",
+    "grpcio-tools==1.66.2",
+]

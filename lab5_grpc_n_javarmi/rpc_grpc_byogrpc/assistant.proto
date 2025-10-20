@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+// python -m grpc_tools.protoc -I./ --python_out=. --pyi_out=. --grpc_python_out=. assistant.proto
+
+// Stlye Guide: https://protobuf.dev/programming-guides/style/.
+// Files should be named `lower_snake_case.proto`.
+
+/*
+Services are what the servers provide for the clients. Specifically for gRPC.
+Use PascalCase (with an initial capital) for both the service name and any RPC method names.
+*/
+service AssistantService {
+  // Calculates the min, max, avg of the provided numeric values, and gives a response in natural language.
+  rpc ReportStats(ReportStatsRequest) returns (ReportStatsResponse);
+}
+
+/*
+Messages are exchanged between clients and servers.
+Use PascalCase (with an initial capital) for message names: SongServerRequest. 
+Prefer to capitalize abbreviations as single words: GetDnsRequest rather than GetDNSRequest. 
+Use lower_snake_case for field names, including oneof field and extension names: song_name.
+*/
+// The report stats request message with the user's name and institution, 
+// along with an array of values to be analyzed.
+message ReportStatsRequest {
+  string user_name = 1;       // user's name at the 1st position
+  string institution = 2;     // user's institution at the 2nd position
+  repeated double values = 3; // list of numeric values for analysis
+}
+
+// The report stats response message with the statistics of the given values,
+// along with a constructed reply in natural language.
+message ReportStatsResponse {
+  double min_value = 1;   // minimum value from the list
+  double max_value = 2;   // maximum value from the list
+  double avg_value = 3;   // average value of the list
+  string message = 4;     // reply in natural language
+}

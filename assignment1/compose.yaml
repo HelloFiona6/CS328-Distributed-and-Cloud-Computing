@@ -1,0 +1,38 @@
+services:
+  node1:
+    image: mpi-node:latest   
+    build: .                 
+    container_name: node1
+    hostname: node1
+    networks: [mpinet]
+    volumes:
+      - ./app:/workspace
+      - sshkeys:/home/mpi/.ssh
+    tty: true
+
+  node2:
+    image: mpi-node:latest
+    container_name: node2
+    hostname: node2
+    networks: [mpinet]
+    volumes:
+      - ./app:/workspace
+      - sshkeys:/home/mpi/.ssh
+    tty: true
+
+  node3:
+    image: mpi-node:latest
+    container_name: node3
+    hostname: node3
+    networks: [mpinet]
+    volumes:
+      - ./app:/workspace
+      - sshkeys:/home/mpi/.ssh
+    tty: true
+
+networks:
+  mpinet:
+    driver: bridge
+
+volumes:
+  sshkeys:
