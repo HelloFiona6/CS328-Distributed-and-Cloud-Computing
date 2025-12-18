@@ -1,0 +1,10 @@
+[project]
+name = "rpc-protobuf"
+version = "0.1.0"
+description = "Protobuf as a Data Serialization Mechanism"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "grpcio==1.66.2",
+    "grpcio-tools==1.66.2",
+]

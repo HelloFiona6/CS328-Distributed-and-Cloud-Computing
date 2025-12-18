@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: # for deployment
+  name: nginx
+spec:
+  replicas: 1 # number of replicas
+  selector:
+    matchLabels:
+      app: nginx # this deployment manages pods with these labels only
+  template:
+    metadata: # for pods
+      labels:
+        app: nginx
+    spec:
+      containers: # each pod will have the following containers
+        - name: nginx
+          image: nginx:1.27
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata: # for service
+  name: nginx
+spec:
+  selector: # this service manages pods with this label only
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80 # port for the service
+      targetPort: 80 # port that the pods are listening on
+  type: ClusterIP # Service accessible only within the cluster

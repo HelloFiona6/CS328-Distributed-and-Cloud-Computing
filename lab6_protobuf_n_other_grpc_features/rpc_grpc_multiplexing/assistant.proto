@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+// Stlye Guide: https://protobuf.dev/programming-guides/style/.
+// Files should be named `lower_snake_case.proto`.
+
+/*
+Services are what the servers provide for the clients. Specifically for gRPC.
+Use PascalCase (with an initial capital) for both the service name and any RPC method names.
+*/
+service AssistantService {
+  // 2 Chilling functions that sleep for a while.
+  rpc ChillA(ChatMessage) returns (ChatMessage);
+  rpc ChillB(ChatMessage) returns (ChatMessage);
+}
+
+/*
+Messages are exchanged between clients and servers.
+Use PascalCase (with an initial capital) for message names: SongServerRequest. 
+Prefer to capitalize abbreviations as single words: GetDnsRequest rather than GetDNSRequest. 
+Use lower_snake_case for field names, including oneof field and extension names: song_name.
+*/
+// The chat message with a message id and the message itself.
+message ChatMessage {
+  int32 id = 1;
+  string message = 2;
+}
