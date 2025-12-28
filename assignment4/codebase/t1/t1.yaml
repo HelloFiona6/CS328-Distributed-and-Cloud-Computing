@@ -4,3 +4,66 @@
 # pod anti-affinity: pod replicas distributed to different nodes
 # preferred weighted node affinity: (1) powerful nodes; (2) non-backup nodes; (3) backup nodes
 # (EXTRA) how to deploy pods to nodes with taints?
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask
+  template:
+    metadata:
+      labels:
+        app: flask
+    spec:
+      affinity:
+        # Pod Anti-Affinity：不允许同节点
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: flask
+            topologyKey: kubernetes.io/hostname
+
+        # Node Affinity（带权重）
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+              - key: capability
+                operator: In
+                values: ["powerful"]
+          - weight: 50
+            preference:
+              matchExpressions:
+              - key: usage
+                operator: NotIn
+                values: ["backup"]
+
+      # Toleration（允许上 vip 节点）
+      tolerations:
+      - key: class
+        operator: Equal
+        value: vip
+        effect: NoSchedule
+
+      containers:
+      - name: flask
+        image: flask-app:1.0.2
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-service
+spec:
+  selector:
+    app: flask
+  ports:
+  - port: 80
+    targetPort: 5000

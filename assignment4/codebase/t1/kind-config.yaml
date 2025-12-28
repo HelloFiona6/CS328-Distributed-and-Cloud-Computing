@@ -29,15 +29,11 @@ nodes:
     usage: normal
     capability: powerful
 
-# Worker 3
+# Worker 3（原本想打 taint 的节点）
 - role: worker
   labels:
     usage: normal
     capability: powerful
-  taints:
-  - key: class
-    value: vip
-    effect: NoSchedule
 
 # Worker 4
 - role: worker
